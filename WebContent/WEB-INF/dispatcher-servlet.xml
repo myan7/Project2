@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+<!-- Step3: Add support for component scanning -->
+	<context:component-scan base-package="my.spring"></context:component-scan>
+	
+	<!-- Step 4: Add support for conversion, formatting and validation support -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	
+	<!-- Step 5: Define Spring MVC view resolver -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/"></property>
+		<property name="suffix" value = ".jsp"></property>
+	</bean>
+	
+	<!-- Chapter 5 view resolving static files -->
+	<mvc:resources location="WEB-INF/css/" mapping="/css/**"></mvc:resources>
+	
+	<mvc:resources location="WEB-INF/files/" mapping="/files/**"></mvc:resources>
+	<!-- Chapter 6 Tags properties binding -->
+	<!-- <bean 	id = "messageSource" 
+			class="org.springframework.context.support.ReloadableResourceBundleMessageSource" >
+		<property name="basenames" >
+			<list>
+				<value>WEB-INF/resources/messages</value>
+			</list>
+		</property>
+		<property name="defaultEncoding" value="UTF-8"></property>
+	</bean> -->
+	
+	<bean 	id = "messageSource" 
+			class="org.springframework.context.support.ReloadableResourceBundleMessageSource" >
+		<property name="basename"  value = "WEB-INF/resources/messages"></property>
+		<property name="defaultEncoding" value="UTF-8"></property>
+	</bean>
+	
+	<!-- Chapter 6 Interceptor -->
+	<bean 	id="localeResolver" 
+			class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="en"></property>
+	</bean>	
+	
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="language"></property>
+		</bean>
+	</mvc:interceptors>
+	
+	
+	<!-- step1 define data source -->
+	<bean id="bds" class="org.apache.tomcat.dbcp.dbcp2.BasicDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521/orcl" />
+		<property name="password" value="oracle" />
+		<property name="username" value="system" />
+		<property name="maxTotal" value="20" />
+		<property name="maxIdle" value="15" />
+		<property name="maxWaitMillis" value="5000" />
+	</bean>
+	
+	<bean name="ht"  depends-on="sessionFactory" class="org.springframework.orm.hibernate5.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<!-- <property name="checkWriteOperations" value="false"></property> -->
+	</bean>
+
+	<!-- Step2: Set up hibernate session factory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="bds"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle12cDialect</prop>  
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+			</props>
+		</property>
+		<property name="packagesToScan" value="my.spring"></property>
+	</bean>
+	
+	<!-- Step 3: set up hibernate transaction manager -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<constructor-arg name="sessionFactory" ref="sessionFactory"></constructor-arg>
+	</bean>
+	
+	<!-- Step 4: enable configuration of transcational annotations -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+</beans>
