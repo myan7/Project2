@@ -18,7 +18,7 @@ import my.spring.service.UserService;
 
 @Controller
 @RequestMapping("/user")
-@SessionAttributes({"user",""})
+@SessionAttributes({"user","item"})
 public class UserController 
 {
 	@Autowired
@@ -28,6 +28,7 @@ public class UserController
 	public String signUp(Model model)
 	{
 		model.addAttribute("user", new User());
+		// add "kart ", kart
 		return "signup";
 	}
 	
@@ -67,5 +68,19 @@ public class UserController
 	}
 
 //	@RequestMapping("/displayPSW")  // link to the forgot password mapping.
+	
+	@RequestMapping("/cart")
+	public String displayCart(@ModelAttribute("user") User user, Model model)
+	{
+		
+		if(user.getUserId()==0)
+		{
+			model.addAttribute("user", user);
+			return "login";
+		}
+		
+		return "cart";
+	}
+	
 	
 }

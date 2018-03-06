@@ -19,19 +19,18 @@ import my.spring.service.ItemService;
 
 
 @Controller
-@SessionAttributes("user")
-public class TestController {
+@SessionAttributes({"user"})
+public class MainController {
 	
 	@Autowired
 	ItemService iService;
 	
-	@RequestMapping(value= "/")
+	@RequestMapping(value= {"/","/home"})
 	public String sayHello(Model model, HttpServletRequest request)
 	{
 		if(request.getSession().getAttribute("user")==null)
 		{
 			model.addAttribute("user", new User());
-			System.out.println("User should be null.");
 		}
 		List<AbstractItem> items = iService.getAll();
 		model.addAttribute("items",items);
@@ -47,18 +46,11 @@ public class TestController {
 		return "header";
 	}
 	
-	@RequestMapping("/home")
-	public String home()
-	{
-		return "index";
-	}
-	
 	@RequestMapping("/{id}")
 	public String testImg(@PathVariable("id") long id , Model model)
 	{
 		AbstractItem item = iService.getItem(id);
 		
-//		System.out.println(item.getItemCategory());
 		if(item.getItemCategory().equalsIgnoreCase("desktop"))
 		{
 			item = (Desktop)item; 
@@ -67,10 +59,7 @@ public class TestController {
 		{
 			item = (Headphone)item;
 		}
-		
-//			Desktop item = (Desktop) iService.getItem(id);
-		
-		System.out.println("testController 1 1 1 1 1 1 1 11 1 ");
+
 		model.addAttribute("item", item);
 		return "testImg";
 	}

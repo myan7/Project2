@@ -115,7 +115,7 @@ public class App
         		5,
     			229.00, 
     			"5 x 11 x 8 in", 
-    			"files/Sony_MDR-Z700_Headphones.jpg", 
+    			"files/Audio_Technica_ATH_WS1100iS_Solid_Bass_Over-Ear_Headphones_with_In-_line_Microphone_&_Control.jpg", 
     			"1.3 lbs", 
     			"With newly designed drivers and in-line mic and control, "
     			+ "the ATH-WS1100iS Solid Bass over-ear headphones give you portable, "
