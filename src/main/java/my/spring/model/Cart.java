@@ -10,9 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapKey;
 import javax.persistence.MapKeyJoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -32,8 +30,6 @@ public class Cart {
 	@Column(name="Quantity")
 	@CollectionTable(name="P2_CART_ITEMS_TBL", 
 	joinColumns=@JoinColumn(name="CARTID"))
-	
-	
 	private Map<AbstractItem,Integer> items;
 	
 	

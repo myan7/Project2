@@ -1,8 +1,17 @@
+<%@page import="my.spring.model.Cart"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html >
 <html>
 <head>
+<script
+	src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<link
+	href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link
 	href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
@@ -11,7 +20,7 @@
 </head>
 <body>
 <jsp:include page="${request.contextPath}/header" />
-
+<c:set var = "total" value = "${0}"></c:set>
 <div id="heading-breadcrumbs">
         <div class="container">
           <div class="row d-flex align-items-center flex-wrap">
@@ -25,7 +34,7 @@
         <div class="container">
           <div class="row bar">
             <div class="col-lg-12">
-              <p class="text-muted lead">You currently have 3 item(s) in your cart.</p>
+              <p class="text-muted lead">You currently have ${user.getUserCart().getItems().size()} item(s) in your cart.</p>
             </div>
             <div id="basket" class="col-lg-9">
               <div class="box mt-0 pb-0 no-horizontal-padding">
@@ -36,47 +45,49 @@
                         <tr>
                           <th colspan="2">Product</th>
                           <th>Quantity</th>
-                          <th>Unit price</th>
+                          <th >Unit</th>
                           <th colspan="2">Total</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td><a href="#"><img src="img/detailsquare.jpg" alt="White Blouse Armani" class="img-fluid"></a></td>
-                          <td><a href="#">White Blouse Armani</a></td>
+                      <c:forEach items="${user.getUserCart().getItems()}" var="item">
+                       <tr id = "${item.getKey().itemId}">
+                          <td><a href="/Project2/${item.getKey().itemId}"><img src="/Project2/${item.getKey().itemImage}" alt="${item.getKey().itemName}" class="img-fluid"  style="width: 20%; height: 7%"></a></td>
+                          <td><a href="/Project2/${item.getKey().itemId}">${item.getKey().itemName}</a></td>
                           <td>
-                            <input type="number" value="2" class="form-control">
+                            <input type="number" value="${item.getValue()}" class="form-control">
                           </td>
-                          <td>$123.00</td>
-                          <td>$246.00</td>
-                          <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                        </tr>
-                        <tr>
-                          <td><a href="#"><img src="img/basketsquare.jpg" alt="Black Blouse Armani" class="img-fluid"></a></td>
-                          <td><a href="#">Black Blouse Armani</a></td>
                           <td>
-                            <input type="number" value="1" class="form-control">
-                          </td>
-                          <td>$200.00</td>
-                          <td>$200.00</td>
-                          <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
+							<c:set var="balance" value="${item.getKey().itemPrice}" />
+							<fmt:formatNumber type="currency" currencySymbol="$"
+								value="${balance}"/>
+						  </td>
+                          <td>
+                          	<c:set var="balance" value="${item.getKey().itemPrice*item.getValue()}" />
+							<fmt:formatNumber type="currency" currencySymbol="$"
+								value="${balance}" />
+						  </td>
+                          <td><a href="/Project2/user/removeFromCart/${item.getKey().itemId}"><i class="fa fa-trash-o"></i></a></td>
+                    			
                         </tr>
+                      </c:forEach>
                       </tbody>
                       <tfoot>
-                        <tr>
-                          <th colspan="5">Total</th>
-                          <th colspan="2">$446.00</th>
-                        </tr>
+	                      <c:forEach var = "item" items = "${ user.getUserCart().getItems() }">
+	                      	<c:set var = "total" value = "${ total + item.getKey().itemPrice * item.getValue() }"></c:set>
+	                      </c:forEach>
+	                       <tr>
+	                          <th colspan="5">Total</th>
+	                          <th colspan="2"><fmt:formatNumber type="currency" currencySymbol="$"
+									value="${total}" /></th>
+	                      </tr>
                       </tfoot>
                     </table>
                   </div>
-                  <div class="box-footer d-flex justify-content-between align-items-center">
+                   <div class="box-footer d-flex justify-content-between align-items-center">
                     <div class="left-col"><a href="/Project2/home" class="btn btn-secondary mt-0"><i class="fa fa-chevron-left"></i> Continue shopping</a></div>
-                    <div class="right-col">
-                      <button class="btn btn-secondary"><i class="fa fa-refresh"></i> Update cart</button>
-                      <button type="submit" class="btn btn-template-outlined">Proceed to checkout <i class="fa fa-chevron-right"></i></button>
-                    </div>
-                  </div>
+                    <div class="right-col"><a href="#" class="btn btn-secondary"><i class="fa fa-refresh"></i> Update cart</a></div> 
+                  </div> 
                 </form>
               </div>
             </div>
@@ -91,7 +102,8 @@
                     <tbody>
                       <tr>
                         <td>Order subtotal</td>
-                        <th>$446.00</th>
+                        <th><fmt:formatNumber type="currency" currencySymbol="$"
+								value="${total}" /></th>
                       </tr>
                       <tr>
                         <td>Shipping and handling</td>
@@ -99,14 +111,20 @@
                       </tr>
                       <tr>
                         <td>Tax</td>
-                        <th>$0.00</th>
+                        <c:set var="tax" value = "${total*0.1}"></c:set>
+                        <th><fmt:formatNumber type="currency" currencySymbol="$"
+								value="${tax}" /></th>
                       </tr>
                       <tr class="total">
                         <td>Total</td>
-                        <th>$456.00</th>
+                        <th><fmt:formatNumber type="currency" currencySymbol="$"
+								value="${total+10+tax}" /></th>
                       </tr>
                     </tbody>
                   </table>
+                  <form>
+                    	<button type="submit" class="btn btn-success" style="float: right">Proceed to checkout <i class="fa fa-chevron-right"></i></button>
+                    </form>
                 </div>
               </div>
               

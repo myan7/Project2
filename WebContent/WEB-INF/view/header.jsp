@@ -43,22 +43,20 @@
 			        <li class="dropdown">
 			          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-anchor"></i> <spring:message code = "category.text"></spring:message> <span class="caret"></span></a>
 			          <ul class="dropdown-menu" role="menu">
-			            <li><a href="#"><i class="fa fa-plug"></i> <spring:message code ="category.desktop"></spring:message> </a></li>
-			            <li><a href="#"><i class="fa fa-phone"></i> <spring:message code ="category.publication"></spring:message></a></li>
-			            <li><a href="#"><i class="fa fa-laptop"></i> <spring:message code ="category.laptop" ></spring:message></a></li>
-			            <li><a href="#"><i class="fa fa-headphones"></i> <spring:message code ="category.headphone" ></spring:message></a></li>
-			            <li><a href="#"><i class="fa fa-fighter-jet"></i> <spring:message code ="category.toy" ></spring:message></a></li>
-			            <li><a href="#"><i class="fa fa-fighter-jet"></i> <spring:message code ="category.candidate" ></spring:message></a></li>
-			            <li class="active"><a href="#"><i class="fa fa-credit-card"></i> <spring:message code ="category.clothing" ></spring:message></a></li>
+			            <li><a href="/Project2/category=desktop"><i class="fa fa-plug"></i> <spring:message code ="category.desktop"></spring:message> </a></li>
+			            <li><a href="/Project2/category=book"><i class="fa fa-phone"></i> <spring:message code ="category.book"></spring:message></a></li>
+			            <li><a href="/Project2/category=laptop"><i class="fa fa-laptop"></i> <spring:message code ="category.laptop" ></spring:message></a></li>
+			            <li><a href="/Project2/category=headphone"><i class="fa fa-headphones"></i> <spring:message code ="category.headphone" ></spring:message></a></li>
+			            <li class="active"><a href="./category=clothing"><i class="fa fa-credit-card"></i> <spring:message code ="category.clothing" ></spring:message></a></li>
 			          </ul>
 			        </li>
 			        <!-- Category dropdown ends -->
 			        
 			        <!-- Search starts -->
 			        <li>
-			            <form class="navbar-form" role="search">
+			            <form action = "/Project2/search=${key}" class="navbar-form" >
 			            <div class="input-group">
-			                <input type="text" class="form-control" placeholder="search" name="q">
+			                <input type="text" class="form-control" placeholder="search" name="key">
 			                <div class="input-group-btn">
 			                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
 			                </div>
@@ -77,12 +75,12 @@
 			          <ul class="dropdown-menu login-panel">
 			            <li>
 			                <div class="dropdown-header">
-			                    <span class="login-header color-blue"> <a href="user/signup"><spring:message code = "signup.text"></spring:message></a></span>
+			                    <span class="login-header color-blue"> <a href="/Project2/user/signup"><spring:message code = "signup.text"></spring:message></a></span>
 			                    <span class="forgot-password color-blue"><a href="user/displayPSW">Forgot password?</a></span>
 			                </div>
 			                <div class="clearfix"></div>
 			                <div style="padding: 8px;">
-			                    <form:form id="loginform" cssClass="form-horizontal" role="form" action="user/login" modelAttribute="user">
+			                    <form:form id="loginform" cssClass="form-horizontal" role="form" action="/Project2/user/login" modelAttribute="user">
 			                        <div style="margin-bottom: 10px" class="input-group">
 			                            <span class="input-group-addon"><i class="glyphicon glyphicon-user color-blue"></i></span>
 			                            <form:input id="userEmail" type="text" cssClass="form-control" path="userEmail" placeholder="email" />                                        
@@ -107,19 +105,25 @@
 			            </li>
 			          </ul>
 			        </li>
+			         <li class="active"><a href="navCart"><i class="fa fa-shopping-cart"></i> <spring:message code = "shopingcart.text"></spring:message></a></li>
 </c:if>		
 
 <c:if test="${!((user eq null) || (user.userId==0))}">
  					<li class="dropdown">
 			          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <b class="color-blue">${user.userFirstName} ${ user.userLastName} </b> <span class="caret"></span></a>
 			          <ul class="dropdown-menu login-panel">
-			            <li> <a href="/Project2/signout">Log out</a></span></li>
+			          <!--   <li> <a href="/Project2/signout">Log out</a></span></li> -->
+			          <form action ="/Project2/signout">
+			          		<input id="btn-login" class="btn btn-block btn-danger" type="submit" value = "Log out">
+			          </form>
 			          </ul>
 			        </li>
+			       <li class="active"><a href="/Project2/user/cart"><i class="fa fa-shopping-cart"></i> <spring:message code = "shopingcart.text"></spring:message><span class="badge"
+								style="background-color: red;" id="cartSize">${user.getUserCart().getItems().size()}</span></a></li>
+					
 </c:if>	     
 			       
-			        <li class="active"><a href="#"><i class="fa fa-shopping-cart"></i> <spring:message code = "shopingcart.text"></spring:message> </a></li>
-					
+			       
 					<!-- Language bar starts -->
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-language"></i> <spring:message code = "language.text"></spring:message> <span class="caret"></span></a>

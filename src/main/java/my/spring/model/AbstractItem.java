@@ -45,7 +45,6 @@ public abstract class AbstractItem
 		
 		this.itemBrand = itemBrand;
 		this.itemName = itemName;
-		this.itemCategory = itemCategory;
 		this.itemInventory = itemInventory;
 		this.itemPrice = itemPrice;
 		this.itemDimension = itemDimension;

@@ -24,7 +24,12 @@ public class ItemDaoImpl implements ItemDao {
 	@Override
 	public List<AbstractItem> getItemsByKeyword(String keyword) {
 		
-		return null;
+		System.out.println(keyword);
+		String query = "from AbstractItem where itemName like ?";
+		List<AbstractItem> items =  (List<AbstractItem>) ht.find(query, new Object[] {"%"+keyword+"%"});
+		
+		return items;
+		
 	}
 
 	@Override
@@ -44,6 +49,14 @@ public class ItemDaoImpl implements ItemDao {
 	public List<AbstractItem> getAll() {
 		
 		return (List<AbstractItem>) ht.find("from AbstractItem");
+	}
+
+	@Override
+	public List<AbstractItem> getByCategory(String category) {
+		
+		String query = "from AbstractItem where itemCategory = ?";
+		List<AbstractItem> items =  (List<AbstractItem>) ht.find(query, new Object[] {category});
+		return items;
 	}
 	
 	

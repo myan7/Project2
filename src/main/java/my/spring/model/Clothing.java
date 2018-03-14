@@ -13,6 +13,7 @@ public class Clothing extends AbstractItem {
 	private String bodySize; // midium large small
 	private String color;
 	private String material;
+	private String gender; 
 
 	public Clothing() 
 	{
@@ -21,12 +22,21 @@ public class Clothing extends AbstractItem {
 
 	public Clothing(String itemBrand, String itemName, int itemInventory, double itemPrice, String itemDemension,
 			String itemImage, String itemWeight, String itemDescription, 
-			String size, String color, String material) 
+			String size, String color, String material, String gender) 
 	{
 		super(itemBrand, itemName, itemInventory, itemPrice, itemDemension, itemImage, itemWeight, itemDescription);
 		this.bodySize = size;
 		this.color = color;
 		this.material = material;
+		this.gender = gender;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	public String getBodySize() {

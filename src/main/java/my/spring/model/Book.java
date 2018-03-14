@@ -5,16 +5,16 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="P2_PUBLICATION_TBL")
-public class Publication extends AbstractItem {
+public class Book extends AbstractItem{
 	{
-		super.setItemCategory("publication");
+		super.setItemCategory("book");
 	}
 	
 	private String author;
 	private String yearofPublish;
 	private String type; // book ebook
 	
-	public Publication() {
+	public Book() {
 
 	}
 
@@ -42,7 +42,7 @@ public class Publication extends AbstractItem {
 		this.type = type;
 	}
 
-	public Publication(String itemBrand, String itemName, int itemInventory,
+	public Book(String itemBrand, String itemName, int itemInventory,
 			double itemPrice, String itemDemension, String itemImage, String itemWeight, String itemDescription,
 			String author, String yearofPublish, String type) 
 	{

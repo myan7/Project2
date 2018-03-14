@@ -25,6 +25,18 @@ public class ItemServiceImpl implements ItemService {
 		
 		return itemDao.getAll();
 	}
+
+	@Override
+	public List<AbstractItem> getByCategory(String category) {
+		
+		return itemDao.getByCategory(category);
+	}
+
+	@Override
+	public List<AbstractItem> getByKey(String key) {
+		
+		return itemDao.getItemsByKeyword(key);
+	}
 	
 
 }

@@ -24,31 +24,13 @@
 
 	<jsp:include page="${request.contextPath}/header" />
 
-	<%-- 	<c:forEach items="${items}" var="item">
- Item: 
- <div class>
-			<c:set var="balance" value="${item.itemPrice}" />
-			<p>
-				<a href="./${item.itemId}"><img id="${item.itemId}"
-					src="${item.itemImage}" alt="item" style="width: 30%; height: 30%"></a>
-			</p>
-			<p>${item.itemBrand}</p>
-			<p>${item.itemName}</p>
-			<p>
-				<fmt:formatNumber type="currency" currencySymbol="$"
-					value="${balance}" />
-			</p>
-		</div>
-	</c:forEach> --%>
-
 	<div class="container text-center">
 		<div class="row">
 			<div>
-				<c:forEach items="${items}" var="item">
+				<c:forEach items="${itemList}" var="item">
 					<div class="col-lg-4 col-md-6">
 						<div class="box-simple">
-							<div class="icon-outlined">
-							</div>
+							<div class="icon-outlined"></div>
 							<a href="./${item.itemId}"> <img id="${item.itemId}"
 								src="${item.itemImage}" alt="item"
 								style="width: 40%; height: 40%"></a>
@@ -56,16 +38,22 @@
 							<c:set var="balance" value="${item.itemPrice}" />
 							<fmt:formatNumber type="currency" currencySymbol="$"
 								value="${balance}" />
-								<form action="./${item.itemId}" method="post">
-									<input type="hidden" name="itemName" value="<c:out value="${item.itemId}"/>" />
-									<input type="submit" value="details"/>
-								</form>
+							<form action="./${item.itemId}" method="post">
+								<input type="hidden" name="itemName"
+									value="<c:out value="${item.itemId}"/>" /> <input
+									type="submit" value="details" />
+							</form>
+							<br>
 						</div>
 					</div>
 				</c:forEach>
 			</div>
 		</div>
+		<c:forEach begin="1" end="${pages}" var="page">
+			<a href="page=${page}">${page}</a> &#160&#160&#160&#160
+		</c:forEach>
 	</div>
+
 
 
 	<script type="text/javascript"

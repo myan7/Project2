@@ -15,4 +15,6 @@ public interface ItemDao {
 	
 	public List<AbstractItem> getAll();
 	
+	public List<AbstractItem> getByCategory(String category);
+	
 }

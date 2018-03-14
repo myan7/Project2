@@ -19,12 +19,17 @@
 </head>
 <body>
 	<jsp:include page="${request.contextPath}/header"/>
-	${item}
+	
 
-	<div>
+	<div class="container">
+	Item Name: ${item.itemBrand}
+	<br>
+	Item Description: ${item.itemDescription}
+	<br>
 		<img alt="test" src="${item.itemImage}"
 			style="width: 30%; height: 30%" />
-		<form action="user/cart" method="post">
+		<form action="/Project2/user/add2cart/${item.itemId}" method="post">	
+			<input type="number" name="quantity" value="1" class="form-control">
 			<input type="hidden" name="itemId" value="${item.itemId}" /> <input
 				type="submit" value="add to cart" />
 		</form>

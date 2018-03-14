@@ -9,7 +9,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
-<!-- Step3: Add support for component scanning -->
+	<!-- Step3: Add support for component scanning -->
 	<context:component-scan base-package="my.spring"></context:component-scan>
 	
 	<!-- Step 4: Add support for conversion, formatting and validation support -->
@@ -68,7 +68,7 @@
 	
 	<bean name="ht"  depends-on="sessionFactory" class="org.springframework.orm.hibernate5.HibernateTemplate">
 		<property name="sessionFactory" ref="sessionFactory"/>
-		<!-- <property name="checkWriteOperations" value="false"></property> -->
+		<property name="checkWriteOperations" value="false"/> <!-- to avoid readOnly mode -->
 	</bean>
 
 	<!-- Step2: Set up hibernate session factory -->
